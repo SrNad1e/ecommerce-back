@@ -1,6 +1,6 @@
-import { Body, Controller, Post, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
-import { createReviewDto } from './dto/create-review.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('reviews')
@@ -9,8 +9,8 @@ export class ReviewsController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async create(@Body() reviewData: createReviewDto) {
-        return this.reviewsService.create(reviewData);
+    async create(@Body() reviewData: CreateReviewDto, @Req() req: any) {
+        return this.reviewsService.create(reviewData, req.user.userId);
     }
 
     @Get('product/:id')

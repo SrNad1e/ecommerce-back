@@ -13,9 +13,13 @@ import { ReviewsModule } from './reviews/reviews.module';
     }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        uri: config.get<string>('MONGO_URI'),
-      }),
+      useFactory: (config: ConfigService) => {
+        const uri = config.get<string>('MONGO_URI');
+        if (!uri) {
+          throw new Error('MONGO_URI is not set');
+        }
+        return { uri };
+      },
     }),
     AuthModule,
     UsersModule,

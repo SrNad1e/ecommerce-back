@@ -17,7 +17,7 @@ export class AuthService {
 
         const hashedPassword = await bcrypt.hash(userDto.password, 10);
         const user = await this.usersService.create({ ...userDto, password: hashedPassword });
-        return this.createToken(user._id.toString(), user.email);
+        return this.createToken(user._id.toString(), user.email, user.role);
     }
 
     async validateUser(email: string, password: string) {
@@ -36,11 +36,11 @@ export class AuthService {
 
     async login(email: string, password: string) {
         const user = await this.validateUser(email, password);
-        return this.createToken(user._id.toString(), user.email);
+        return this.createToken(user._id.toString(), user.email, user.role);
     }
 
-    private createToken(userId: string, email: string) {
-        const payload = { sub: userId, email };
+    private createToken(userId: string, email: string, role: string) {
+        const payload = { sub: userId, email, role };
         return {
             access_token: this.jwtService.sign(payload),
         };
