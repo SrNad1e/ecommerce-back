@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
     constructor(private usersService: UsersService, private jwtService: JwtService) { }
+
     async register(userDto: CreateUserDto) {
         const existing = await this.usersService.findByEmail(userDto.email);
         if (existing) {
