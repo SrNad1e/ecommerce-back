@@ -13,6 +13,12 @@ export class Product extends Document {
   price: number;
 
   @Prop({ required: true, min: 0 })
+  oldPrice: number;
+
+  @Prop({ required: true, min: 0, max: 100 })
+  discount: number;
+
+  @Prop({ required: true, min: 0 })
   stock: number;
 
   @Prop()
